@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HEIC to JPG – Free Online Converter</title>
+    <meta name="description" content="Convert HEIC photos to JPG free online. No upload needed, works instantly in your browser. Perfect for iPhone users on Windows.">
+    <!-- Load required libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg: #f9fafb;
+            --text: #1f2937;
+            --border: #e5e7eb;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+        .container {
+            background: #fff;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #111827;
+        }
+        p.subtitle {
+            font-size: 1rem;
+            color: #6b7280;
+            margin-bottom: 2rem;
+        }
+        .drop-zone {
+            border: 2px dashed var(--primary);
+            border-radius: 0.75rem;
+            padding: 3rem 2rem;
+            background: #f3f4f6;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .drop-zone:hover, .drop-zone.dragover {
+            background: #e0e7ff;
+            border-color: var(--primary-hover);
+        }
+        .drop-zone p {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        .drop-zone span {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        .hidden {
+            display: none !important;
+        }
+
+        /* Button Styles */
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn:hover:not(:disabled) {
+            background: var(--primary-hover);
+            color: white;
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+        .btn-secondary:hover:not(:disabled) {
+            background: #e5e7eb;
+            color: #111827;
+        }
+        .btn-success {
+            background: #10b981;
+        }
+        .btn-success:hover:not(:disabled) {
+            background: #059669;
+        }
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        /* Queue Styles */
+        .queue-container { margin-top: 2rem; text-align: left; }
+        .queue-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+        .queue-header h3 { font-size: 1.25rem; color: #111827; }
+        .queue-actions { display: flex; gap: 0.5rem; }
+
+        .file-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+        .file-list::-webkit-scrollbar { width: 6px; }
+        .file-list::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        .file-list::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .file-info {
+            flex: 1;
+            min-width: 0;
+            padding-right: 1rem;
+        }
+        .file-name {
+            font-weight: 500;
+            color: #111827;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 0.25rem;
+        }
+        .file-size {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        .file-status {
+            width: 110px;
+            text-align: center;
+        }
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .status-pending { background: #e5e7eb; color: #4b5563; }
+        .status-converting { background: #fef08a; color: #854d0e; }
+        .status-done { background: #dcfce3; color: #166534; }
+        .status-error { background: #fee2e2; color: #991b1b; }
+
+        .file-action {
+            width: 120px;
+            text-align: right;
+        }
+
+        /* Progress bar */
+        .progress-container { margin-bottom: 1.5rem; }
+        .progress-text { margin-bottom: 0.5rem; font-size: 0.875rem; font-weight: 500; color: #374151; }
+        .progress-bar-bg { width: 100%; height: 8px; background: #e5e7eb; border-radius: 9999px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s ease; }
+
+        .download-all-container { margin-top: 1.5rem; text-align: center; }
+
+        @media (max-width: 640px) {
+            .queue-header { flex-direction: column; align-items: flex-start; }
+            .file-item { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+            .file-status, .file-action { width: 100%; text-align: left; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>HEIC to JPG – Free Online Converter</h1>
+        <p class="subtitle">Convert HEIC photos to JPG free online. No upload needed, works instantly in your browser. Perfect for iPhone users on Windows.</p>
+
+        <div class="tip-banner" style="background: #e0e7ff; color: #4338ca; padding: 0.75rem; border-radius: 0.5rem; margin-bottom: 1rem; font-size: 0.875rem; font-weight: 500; text-align: center;">
+            💡 Tip: Select all your HEIC files at once and convert them together in one click!
+        </div>
+
+        <div id="drop-zone" class="drop-zone">
+            <p>Drop your HEIC files here</p>
+            <span style="display: block; margin-bottom: 0.25rem;">You can upload multiple files at once — bulk conversion supported!</span>
+            <span style="font-size: 0.75rem;">Or click to browse and select all your iPhone photos together</span>
+            <input type="file" id="file-input" accept=".heic, .heif, image/heic, image/heif" class="hidden" multiple>
+        </div>
+
+        <div id="queue-container" class="queue-container hidden">
+            <div class="queue-header">
+                <h3>Files to Convert</h3>
+                <div class="queue-actions">
+                    <button id="convert-all-btn" class="btn">Convert All</button>
+                    <button id="clear-all-btn" class="btn btn-secondary">Clear All</button>
+                </div>
+            </div>
+
+            <div id="progress-container" class="progress-container hidden">
+                <div class="progress-text" id="progress-text">0 of 0 processed</div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progress-bar-fill"></div>
+                </div>
+            </div>
+
+            <ul id="file-list" class="file-list">
+                <!-- File items populated by JS -->
+            </ul>
+            
+            <div id="download-all-container" class="download-all-container hidden">
+                <button id="download-zip-btn" class="btn btn-success">Download All as ZIP</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const dropZone = document.getElementById("drop-zone");
+            const fileInput = document.getElementById("file-input");
+            const convertAllBtn = document.getElementById("convert-all-btn");
+            const clearAllBtn = document.getElementById("clear-all-btn");
+            const downloadZipBtn = document.getElementById("download-zip-btn");
+            
+            let filesQueue = [];
+            let processedCount = 0;
+            let isConverting = false;
+
+            function addFiles(files) {
+                if (isConverting) {
+                    alert("Please wait for the current conversion to finish before adding more files.");
+                    return;
+                }
+                
+                let added = false;
+                Array.from(files).forEach(file => {
+                    const ext = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
+                    if (ext === '.heic' || ext === '.heif') {
+                        filesQueue.push({
+                            id: Math.random().toString(36).substr(2, 9),
+                            file: file,
+                            status: 'pending', // pending, converting, done, error
+                            resultBlob: null,
+                            newName: file.name.replace(/\.heic$/i, ".jpg").replace(/\.heif$/i, ".jpg")
+                        });
+                        added = true;
+                    }
+                });
+                
+                if (added) {
+                    renderQueue();
+                    // Reset input so identical files can be selected again
+                    fileInput.value = "";
+                }
+            }
+
+            function formatSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+
+            function renderQueue() {
+                const queueContainer = document.getElementById('queue-container');
+                const fileList = document.getElementById('file-list');
+                fileList.innerHTML = '';
+                
+                if (filesQueue.length === 0) {
+                    queueContainer.classList.add('hidden');
+                    return;
+                }
+                queueContainer.classList.remove('hidden');
+
+                filesQueue.forEach(item => {
+                    const li = document.createElement('li');
+                    li.className = 'file-item';
+                    
+                    let statusBadgeClass = 'status-pending';
+                    let statusText = 'Pending';
+                    
+                    if (item.status === 'converting') {
+                        statusBadgeClass = 'status-converting';
+                        statusText = 'Converting...';
+                    } else if (item.status === 'done') {
+                        statusBadgeClass = 'status-done';
+                        statusText = 'Done';
+                    } else if (item.status === 'error') {
+                        statusBadgeClass = 'status-error';
+                        statusText = 'Error';
+                    }
+
+                    let actionHtml = '';
+                    if (item.status === 'done' && item.resultBlob) {
+                        const url = URL.createObjectURL(item.resultBlob);
+                        actionHtml = `<a href="${url}" download="${item.newName}" class="btn btn-small">Download</a>`;
+                    }
+
+                    li.innerHTML = `
+                        <div class="file-info">
+                            <div class="file-name" title="${item.file.name}">${item.file.name}</div>
+                            <div class="file-size">${formatSize(item.file.size)}</div>
+                        </div>
+                        <div class="file-status">
+                            <span class="status-badge ${statusBadgeClass}">${statusText}</span>
+                        </div>
+                        <div class="file-action">
+                            ${actionHtml}
+                        </div>
+                    `;
+                    fileList.appendChild(li);
+                });
+
+                updateProgressUI();
+            }
+
+            function updateProgressUI() {
+                const progressContainer = document.getElementById('progress-container');
+                const progressText = document.getElementById('progress-text');
+                const progressFill = document.getElementById('progress-bar-fill');
+                const downloadAllContainer = document.getElementById('download-all-container');
+
+                if (filesQueue.length === 0) {
+                    progressContainer.classList.add('hidden');
+                    downloadAllContainer.classList.add('hidden');
+                    return;
+                }
+
+                if (isConverting || processedCount > 0) {
+                    progressContainer.classList.remove('hidden');
+                    progressText.textContent = `${processedCount} of ${filesQueue.length} processed`;
+                    progressFill.style.width = `${(processedCount / filesQueue.length) * 100}%`;
+                } else {
+                    progressContainer.classList.add('hidden');
+                }
+
+                const allDone = filesQueue.length > 0 && filesQueue.every(i => i.status === 'done' || i.status === 'error');
+                const hasSuccess = filesQueue.some(i => i.status === 'done');
+                
+                if (allDone && hasSuccess) {
+                    downloadAllContainer.classList.remove('hidden');
+                } else {
+                    downloadAllContainer.classList.add('hidden');
+                }
+                
+                const hasPending = filesQueue.some(i => i.status === 'pending');
+                convertAllBtn.disabled = isConverting || !hasPending;
+                clearAllBtn.disabled = isConverting;
+            }
+
+            async function convertAll() {
+                if (isConverting) return;
+                
+                const pendingFiles = filesQueue.filter(item => item.status === 'pending');
+                if (pendingFiles.length === 0) return;
+
+                if (typeof heic2any === 'undefined') {
+                    alert("Converter library is still loading. Please check your internet connection.");
+                    return;
+                }
+
+                isConverting = true;
+                updateProgressUI();
+
+                for (let i = 0; i < filesQueue.length; i++) {
+                    const item = filesQueue[i];
+                    if (item.status !== 'pending') continue;
+
+                    item.status = 'converting';
+                    renderQueue();
+
+                    try {
+                        // Allow DOM to update before blocking thread
+                        await new Promise(r => setTimeout(r, 50));
+                        
+                        const conversionResult = await heic2any({
+                            blob: item.file,
+                            toType: "image/jpeg",
+                            quality: 0.9
+                        });
+                        item.resultBlob = Array.isArray(conversionResult) ? conversionResult[0] : conversionResult;
+                        item.status = 'done';
+                    } catch (error) {
+                        console.error("Error converting", item.file.name, error);
+                        item.status = 'error';
+                    }
+                    
+                    processedCount++;
+                    renderQueue();
+                }
+
+                isConverting = false;
+                updateProgressUI();
+            }
+
+            function clearAll() {
+                if (isConverting) return;
+                filesQueue = [];
+                processedCount = 0;
+                renderQueue();
+            }
+
+            async function downloadZip() {
+                if (typeof JSZip === 'undefined') {
+                    alert("ZIP generator library failed to load.");
+                    return;
+                }
+                
+                const zip = new JSZip();
+                let hasFiles = false;
+                
+                filesQueue.forEach(item => {
+                    if (item.status === 'done' && item.resultBlob) {
+                        zip.file(item.newName, item.resultBlob);
+                        hasFiles = true;
+                    }
+                });
+
+                if (!hasFiles) return;
+
+                const originalText = downloadZipBtn.textContent;
+                downloadZipBtn.textContent = "Generating ZIP...";
+                downloadZipBtn.disabled = true;
+
+                try {
+                    const zipBlob = await zip.generateAsync({ type: "blob" });
+                    const url = URL.createObjectURL(zipBlob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = "converted_images.zip";
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    
+                    // Cleanup obj url after use slightly later
+                    setTimeout(() => URL.revokeObjectURL(url), 1000);
+                } catch (e) {
+                    console.error(e);
+                    alert("Error generating ZIP file.");
+                } finally {
+                    downloadZipBtn.textContent = originalText;
+                    downloadZipBtn.disabled = false;
+                }
+            }
+
+            // Event Listeners
+            dropZone.addEventListener("click", () => fileInput.click());
+            
+            fileInput.addEventListener("change", (e) => {
+                if (e.target.files) addFiles(e.target.files);
+            });
+
+            dropZone.addEventListener("dragover", (e) => {
+                e.preventDefault();
+                dropZone.classList.add("dragover");
+            });
+            
+            dropZone.addEventListener("dragleave", (e) => {
+                e.preventDefault();
+                dropZone.classList.remove("dragover");
+            });
+            
+            dropZone.addEventListener("drop", (e) => {
+                e.preventDefault();
+                dropZone.classList.remove("dragover");
+                if (e.dataTransfer.files) addFiles(e.dataTransfer.files);
+            });
+
+            convertAllBtn.addEventListener("click", convertAll);
+            clearAllBtn.addEventListener("click", clearAll);
+            downloadZipBtn.addEventListener("click", downloadZip);
+        });
+    </script>
+</body>
+</html>
