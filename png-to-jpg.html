@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./favicon.ico">
     <meta name="description" content="Convert PNG images to JPG free online. Bulk convert with quality control instantly in your browser.">
     <title>PNG to JPG – Free Online Converter</title>
-    <link rel="canonical" href="https://converter-tools-self.vercel.app/png-to-jpg.html">
+    <link rel="canonical" href="https://FileConvertMe-self.vercel.app/png-to-jpg.html">
     <meta property="og:title" content="PNG to JPG – Free Online Converter">
     <meta property="og:description" content="Convert PNG images to JPG free online. Bulk convert with quality control instantly in your browser.">
-    <meta property="og:url" content="https://converter-tools-self.vercel.app/png-to-jpg.html">
+    <meta property="og:url" content="https://FileConvertMe-self.vercel.app/png-to-jpg.html">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="PNG to JPG – Free Online Converter">
@@ -18,7 +19,7 @@
       "@context": "https://schema.org",
       "@type": "WebApplication",
       "name": "PNG to JPG Converter",
-      "url": "https://converter-tools-self.vercel.app/png-to-jpg.html",
+      "url": "https://FileConvertMe-self.vercel.app/png-to-jpg.html",
       "applicationCategory": "BrowserApplication",
       "operatingSystem": "All",
       "offers": {
@@ -29,7 +30,7 @@
     }
     </script>
     <!-- Include JSZip -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
     <style>
         :root {
             --primary: #0EA5E9; /* Sky blue theme */
@@ -411,9 +412,25 @@
             margin-bottom: 0;
             color: var(--text-muted);
         }
+        header { width: 100%; background: var(--card-bg); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 50; margin-bottom: 2rem; }
+        .header-content { max-width: 800px; margin: 0 auto; padding: 1rem; display: flex; align-items: center; justify-content: space-between; }
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--text-main); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+        footer { width: 100%; margin-top: 3rem; text-align: center; padding: 2rem 1rem; border-top: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.875rem; background: var(--card-bg); align-self: stretch; }
     </style>
 </head>
 <body>
+
+<header>
+    <div class="header-content">
+        <a href="index.html" class="logo">
+            <svg width="28" height="28" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="42" height="42" rx="10" fill="var(--primary)"/>
+                <path d="M12 21L21 12L30 21M21 12V30" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            FileConvertMe
+        </a>
+    </div>
+</header>
 
 <div class="container">
     <h1>PNG to JPG – Free Online Converter</h1>
@@ -505,7 +522,11 @@
     </div>
 </article>
 
-<script>
+<footer>
+    <p>&copy; 2026 FileConvertMe. All rights reserved.</p>
+</footer>
+
+<script defer>
     // State
     let filesData = []; // Array: { id, file, status, convertedBlob, newName }
     let isConverting = false;
