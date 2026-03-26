@@ -4,7 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HEIC to JPG – Free Online Converter</title>
-    <meta name="description" content="Convert HEIC photos to JPG free online. No upload needed, works instantly in your browser. Perfect for iPhone users on Windows.">
+    <meta name="description" content="Convert HEIC photos to JPG free online. Bulk convert multiple files instantly.">
+    <link rel="canonical" href="https://converter-tools-self.vercel.app/heic-to-jpg.html">
+    <meta property="og:title" content="HEIC to JPG – Free Online Converter">
+    <meta property="og:description" content="Convert HEIC photos to JPG free online. Bulk convert multiple files instantly.">
+    <meta property="og:url" content="https://converter-tools-self.vercel.app/heic-to-jpg.html">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="HEIC to JPG – Free Online Converter">
+    <meta name="twitter:description" content="Convert HEIC photos to JPG free online. Bulk convert multiple files instantly.">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "HEIC to JPG Converter",
+      "url": "https://converter-tools-self.vercel.app/heic-to-jpg.html",
+      "applicationCategory": "BrowserApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
     <!-- Load required libraries -->
     <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
@@ -27,8 +50,8 @@
             color: var(--text);
             line-height: 1.6;
             display: flex;
-            justify-content: center;
-            align-items: flex-start;
+            flex-direction: column;
+            align-items: center;
             min-height: 100vh;
             padding: 2rem 1rem;
         }
@@ -201,6 +224,46 @@
             .file-item { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
             .file-status, .file-action { width: 100%; text-align: left; }
         }
+
+        /* SEO Content Styles */
+        .seo-content {
+            max-width: 700px;
+            width: 100%;
+            margin-top: 3rem;
+            color: #374151;
+            text-align: left;
+        }
+        .seo-content h2 {
+            font-size: 1.5rem;
+            color: #111827;
+            margin-bottom: 1rem;
+        }
+        .seo-content h3 {
+            font-size: 1.25rem;
+            color: #111827;
+            margin-top: 2rem;
+            margin-bottom: 1.25rem;
+        }
+        .seo-content p {
+            margin-bottom: 1.5rem;
+        }
+        .faq-item {
+            margin-bottom: 1.25rem;
+            background: #fff;
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .faq-item h4 {
+            font-size: 1.1rem;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+        .faq-item p {
+            margin-bottom: 0;
+            color: #4b5563;
+        }
     </style>
 </head>
 <body>
@@ -245,6 +308,33 @@
             </div>
         </div>
     </div>
+
+    <article class="seo-content">
+        <h2>How to Convert HEIC to JPG Online</h2>
+        <p>Using our totally free online converter, you can effortlessly change your Apple HEIC or HEIF photos into standard JPG images. Simply drag and drop your files into the upload area above, and our tool safely processes the conversion directly inside your browser without uploading your sensitive photos to any external servers.</p>
+        
+        <h3>Frequently Asked Questions</h3>
+        <div class="faq-item">
+            <h4>What is HEIC format?</h4>
+            <p>HEIC (High-Efficiency Image Container) is Apple's high-efficiency image format used on modern iOS devices. It saves significant storage space compared to JPGs, but it isn't universally supported natively on Windows or standard web browsers without extensions.</p>
+        </div>
+        <div class="faq-item">
+            <h4>Is this converter free?</h4>
+            <p>Yes, this tool is 100% free with no hidden fees, subscriptions, or watermarks applied to your exported images.</p>
+        </div>
+        <div class="faq-item">
+            <h4>Is my data safe?</h4>
+            <p>Absolutely. The conversion happens entirely client-side using JavaScript. Your files never leave your computer and are never uploaded to any cloud servers.</p>
+        </div>
+        <div class="faq-item">
+            <h4>Does it work on Windows?</h4>
+            <p>Yes! Since it runs inside your web browser (like Chrome, Edge, Firefox, or Safari), it works flawlessly on Windows, Mac, Linux, and even mobile devices seamlessly.</p>
+        </div>
+        <div class="faq-item">
+            <h4>Can I convert multiple files?</h4>
+            <p>Yes, bulk conversion is fully supported. Select as many files as you want and convert them all at once seamlessly, then download them grouped in a convenient ZIP file to save time.</p>
+        </div>
+    </article>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
