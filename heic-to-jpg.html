@@ -14,19 +14,43 @@
     <meta name="twitter:title" content="HEIC to JPG – Free Online Converter">
     <meta name="twitter:description" content="Convert HEIC photos to JPG free online. Bulk convert multiple files instantly.">
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "HEIC to JPG Converter",
-      "url": "https://converter-tools-self.vercel.app/heic-to-jpg.html",
-      "applicationCategory": "BrowserApplication",
-      "operatingSystem": "All",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "HEIC to JPG Converter",
+        "url": "https://converter-tools-self.vercel.app/heic-to-jpg.html",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Windows, Mac, Linux, Android, iOS",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "How to convert HEIC to JPG",
+        "step": [
+          {
+            "@type": "HowToStep",
+            "name": "Step 1",
+            "text": "Click or drag your HEIC files into the upload area"
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Step 2",
+            "text": "Click the Convert All button"
+          },
+          {
+            "@type": "HowToStep",
+            "name": "Step 3",
+            "text": "Click Download All as ZIP to save your JPG files"
+          }
+        ]
       }
-    }
+    ]
     </script>
     <!-- Load required libraries -->
     <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
@@ -281,6 +305,10 @@
             <span style="display: block; margin-bottom: 0.25rem;">You can upload multiple files at once — bulk conversion supported!</span>
             <span style="font-size: 0.75rem;">Or click to browse and select all your iPhone photos together</span>
             <input type="file" id="file-input" accept=".heic, .heif, image/heic, image/heif" class="hidden" multiple>
+        </div>
+
+        <div class="trust-banner" style="background: #ECFDF5; color: #065F46; padding: 0.875rem; border-radius: 0.5rem; margin-top: 1rem; margin-bottom: 1rem; font-size: 0.9rem; font-weight: 500; text-align: center; border: 1px solid #A7F3D0; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);">
+            🔒 100% Private — Your files never leave your device. All conversion happens locally in your browser.
         </div>
 
         <div id="queue-container" class="queue-container hidden">
