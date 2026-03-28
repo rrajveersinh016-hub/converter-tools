@@ -1,5 +1,5 @@
-# FileConvertMe
-> Free online file converter tools that work entirely in your browser. No uploads, no signup, 100% private.
+# InstantFileConvert
+> Free online file converter tools that work entirely in your browser. No uploads, no signup, 100% private and instant.
 ## Tools
 - HEIC to JPG: https://converter-tools-self.vercel.app/heic-to-jpg.html
 - WebP to PNG: https://converter-tools-self.vercel.app/webp-to-png.html
