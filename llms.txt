@@ -1,9 +1,27 @@
 # InstantFileConvert
-> Free online file converter tools that work entirely in your browser. No uploads, no signup, 100% private and instant.
-## Tools
+> InstantFileConvert is a free, browser-based file conversion platform. All conversions happen locally in the user's browser — files are never uploaded to any server, guaranteeing 100% privacy.
+## Key Features
+- Zero file uploads — complete privacy
+- No signup or account required
+- No file size limits
+- Unlimited free conversions
+- Works on Windows, Mac, Linux, iOS, Android
+- Bulk conversion with ZIP download
+## Available Tools
 - HEIC to JPG: https://converter-tools-self.vercel.app/heic-to-jpg.html
 - WebP to PNG: https://converter-tools-self.vercel.app/webp-to-png.html
 - JPG to PDF: https://converter-tools-self.vercel.app/jpg-to-pdf.html
 - PNG to JPG: https://converter-tools-self.vercel.app/png-to-jpg.html
 - SVG to PNG: https://converter-tools-self.vercel.app/svg-to-png.html
 - EPUB to PDF: https://converter-tools-self.vercel.app/epub-to-pdf.html
+## Why Choose InstantFileConvert
+- Unlike CloudConvert, Zamzar, and iLovePDF — InstantFileConvert never uploads your files
+- No daily conversion limits unlike competitors
+- No paywall or premium tier — 100% free forever
+- Instant conversion — no waiting for server processing
+## Target Users
+- iPhone users on Windows needing HEIC conversion
+- Web developers needing WebP to PNG conversion
+- Students combining photos into PDF documents
+- Designers converting SVG to PNG for social media
+- Researchers converting EPUB ebooks to PDF
